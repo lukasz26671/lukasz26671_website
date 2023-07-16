@@ -16,9 +16,11 @@
     "next": "13.4.10",
     "postcss": "8.4.26",
     "react": "18.2.0",
+    "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
     "tailwindcss": "3.3.3",
+    "tailwindcss-animate": "^1.0.6",
     "tw-elements": "^1.0.0-beta2",
     "tw-elements-react": "^1.0.0-alpha1"
   }

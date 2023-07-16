@@ -7,16 +7,22 @@ import Link from "next/link";
 
 export default function Audioplayer() {
     const icon_size = 24;
-    const [playlist, setPlaylist] = useState({})
+    const [playlist, setPlaylist] = useState([])
     const [shuffle, setShuffle] = useState(false);
     const [loop, setLoop] = useState(false);
     const [songId, setSongId] = useState(0);
-    const [isFeatured, setIsFeatured] = useState(false);
+    const [playlists, setPlaylists] = useState([]);
+    const [playlistId, setPlaylistId] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [prevIdx, setPrevIdx] = useState(-1);
 
+    const [playlistRetries, setPlaylistRetires] = useState(0);
+    const [audioRetries, setAudioRetires] = useState(0);
+
     const audioEl = createRef();
     const titleEl = createRef();
+
+    const maxLengthSongs = 200;
 
     function getRandomSongIdx(p = null) {
         let pl = null
@@ -27,42 +33,64 @@ export default function Audioplayer() {
         function getRandomInt(max) {
             return Math.floor(Math.random() * max);
         }
-        let mLength = Math.min(playlist?.IDs?.length, playlist?.authors?.length, playlist?.titles?.length)
 
-        return getRandomInt(mLength)
+        return getRandomInt(playlist?.length ?? 0)
     }
 
     useEffect(()=> {
-        if (audioEl.current != null) {
-            audioEl.current.volume = 0.3;
+        if(playlistRetries < 5) {
+            setTimeout(()=> {
+                fetch(`http://lukasz266713.ddns.net:3500/Playlist/GetAvailablePlaylists`, {
+                    method: "POST",
+                    redirect: "follow",
+                    referrerPolicy: "no-referrer",
+                }).then(res => res.json()).then(pl => {
+                    console.log(pl)
+                    setPlaylists(pl);
+                }).catch(e => {
+                    setPlaylistRetires(playlistRetries + 1); 
+                });
+            }, ((playlistRetries+1) * (playlistRetries+1) * 1000))
+        } else if(playlistRetries == 6){
+            alert("Audio player is unavailable.")
+            setPlaylistRetires(playlistRetries + 1)
         }
-
-        return () => {
-
-        }
-
-    }, [audioEl.current])
+    }, [playlistRetries])
     
-    useEffect(()=> {
-        fetch(`http://lukasz266713.ddns.net:3300/api/readplaylist/${isFeatured ? "featured" : ""}`).then(s => s.json()).then(s => {
-            let mLength = Math.min(s?.IDs?.length, s?.authors?.length, s?.titles?.length)
-        
-            let nobj = {IDs: s?.IDs?.slice(0, mLength), authors: s?.authors?.slice(0, mLength), titles: s?.titles?.slice(0, mLength)}
 
-            setPlaylist(nobj);
+    useEffect(()=> {
+        if(playlists[playlistId] == null)
+            return;
+
+        fetch(`http://lukasz266713.ddns.net:3500/Playlist/GetPlaylist`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json;v=1"
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify({
+                "SheetName": playlists[playlistId],
+                "Ranges": [`C3:C${maxLengthSongs}`,`D3:D${maxLengthSongs}`,`E3:E${maxLengthSongs}`]
+            })
+        }).then(s => s.json()).then(s => {
+            setPlaylist(s);
         });
-    }, [isFeatured]);
+    }, [playlists, playlistId]);
 
     
     useEffect(()=> {
-        setSongId(getRandomSongIdx(playlist))
+        if(playlist != null)
+            setSongId(getRandomSongIdx(playlist))
+
     }, [playlist])
 
     useEffect(()=> {
         if (audioEl.current != null) {
-            let id = playlist?.IDs?.[songId];
+            let id = playlist?.[songId]?.youtubeID;
             if (id != null) {
-                audioEl.current.src = `http://lukasz266713.ddns.net:1234/stream_id/${playlist?.IDs?.[songId]}`;
+                audioEl.current.pause();
+                audioEl.current.src = `http://lukasz266713.ddns.net:1234/stream_id/${playlist?.[songId]?.youtubeID}`;
 
                 if(isPlaying) {
                     audioEl.current.play().catch(e => {
@@ -81,7 +109,7 @@ export default function Audioplayer() {
     }
 
     function share(e) {
-        navigator.clipboard.writeText(`https://youtu.be/${playlist.IDs?.[songId]}`)
+        navigator.clipboard.writeText(`https://youtu.be/${playlist?.[songId]?.youtubeID}`)
 
         let s_ico = document.getElementById("s_ico");
 
@@ -108,7 +136,12 @@ export default function Audioplayer() {
         setLoop(!loop);
     }
     function handlePlaylistChange(evt) {
-        setIsFeatured(evt === "featured")
+        const p = isPlaying;
+        audioEl.current.pause();
+        setPlaylistId(evt)
+        if(p) {
+            setIsPlaying(true)
+        }
     }
     function togglePlay() {
         setPlay(!isPlaying);
@@ -130,16 +163,15 @@ export default function Audioplayer() {
         if (shuffle) {
             setSongId(getRandomSongIdx())
         } else {
-            let mLength = Math.min(playlist?.IDs?.length, playlist?.authors?.length, playlist?.titles?.length)
-
-            let idx = (songId + 1) % mLength;
+            let l = playlist?.length ?? 0;
+            let idx = (songId + 1) % l;
 
             setPrevIdx(songId);
             setSongId(idx);
         }
     }
     function prevSong() {
-        let mLength = Math.min(playlist?.IDs?.length, playlist?.authors?.length, playlist?.titles?.length)
+        let l = playlist?.length ?? 0;
 
         let idx = songId;
         if (prevIdx !== songId && prevIdx >= 0) {
@@ -150,10 +182,10 @@ export default function Audioplayer() {
         } else {
             idx--;
 
-            if (idx >= mLength) {
+            if (idx >= l) {
                 idx = 0;
             } else if(idx < 0) {
-                idx = mLength-1;
+                idx = l-1;
             } 
 
             setSongId(idx);
@@ -163,13 +195,15 @@ export default function Audioplayer() {
     return (
         <div id="audioPlayer" className="text-center pt-3 cursor-default">
             <Select name="playlistSelect" variant="outlined" defaultValue="default" onChange={handlePlaylistChange} label="Select playlist" id="playlistSelect">
-                <Option className="text-black bg-transparent" value="default">Default</Option>
-                <Option className="text-black bg-transparent" value="featured">Featured</Option>
+                { playlists?.map((_playlist, i)=> {
+                        return <Option key={i} className="text-black bg-transparent" value={`${i}`}>{_playlist}</Option>
+                    })
+                }
             </Select>
             <div className="content unselectable mt-3 py-3" id="content">
                 <p className="p-3 pb-6 h-20" id="song"><span>{isNaN(songId) ? "" : songId+1 + "."} </span>
-                    <Link target="_blank" ref={titleEl} href={`https://youtube.com/watch?v=${playlist.IDs?.[songId]}`}>
-                        {`${playlist.authors?.[songId]} - ${playlist.titles?.[songId]}`}
+                    <Link target="_blank" ref={titleEl} href={`https://youtube.com/watch?v=${playlist?.[songId]?.youtubeID}`}>
+                        { playlist?.[songId] != null ? `${playlist?.[songId]?.author} - ${playlist?.[songId]?.title}` : ""}
                     </Link>
                 </p>
                 <div className="controls">

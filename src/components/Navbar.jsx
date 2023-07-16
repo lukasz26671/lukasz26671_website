@@ -37,13 +37,18 @@ export function Navbar({ className }) {
                     </Typography>
                 </div>
                 <List>
-                    <Link href="https://lukasz26671.github.io/about">
+                    <Link href="/">
+                        <ListItem className="hover:drop-shadow-glow-white text-center sm:text-left">
+                            Strona główna
+                        </ListItem>
+                    </Link>
+                    <Link href="/about">
                         <ListItem className="hover:drop-shadow-glow-white text-center sm:text-left">
                             Coś o mnie
                         </ListItem>
                     </Link>
                     <div className="separator border-slate-700/40"></div>
-                    <Link href="https://lukasz26671.github.io/minecraft_mods">
+                    <Link href="/mods">
                         <ListItem className="hover:drop-shadow-glow-white text-center sm:text-left">
                             Mody
                         </ListItem>
