@@ -36,7 +36,12 @@ export default function Audioplayer() {
         if (audioEl.current != null) {
             audioEl.current.volume = 0.3;
         }
-    }, [])
+
+        return () => {
+
+        }
+
+    }, [audioEl.current])
     
     useEffect(()=> {
         fetch(`http://lukasz266713.ddns.net:3300/api/readplaylist/${isFeatured ? "featured" : ""}`).then(s => s.json()).then(s => {
@@ -168,8 +173,18 @@ export default function Audioplayer() {
                     </Link>
                 </p>
                 <div className="controls">
-                    <audio ref={audioEl} volume={0.4}></audio>
-                    <div id="volumeContainer" className="mt-2" onEnded={()=> {if(!loop) nextSong()}}>
+                    <audio ref={audioEl} volume={0.4} onEnded={()=> {
+                            if(!loop) {
+                                nextSong()
+                            } else {
+                                if(audioEl.current != null) {
+                                    audioEl.current.currentTime = 0;
+                                    audioEl.current.play();
+                                }
+                            }
+                        
+                        }}></audio>
+                    <div id="volumeContainer" className="mt-2">
                         <div id="volumebar flex flex-column content-center">
                             <input type="range" onChange={changeVolume} min="0" max="100" className="slider" id="volSlider" title="Volume: 50%" />
                         </div>
