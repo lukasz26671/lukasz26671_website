@@ -43,7 +43,7 @@ export default function Home() {
             </div>
           </a>
         </div>
-        <section id="first" className="w-screen min-h-screen p-1 sm:p-4 bg-zinc-800">
+        <section id="first" className="w-screen min-h-screen p-1 sm:p-4 text-white bg-zinc-800">
           <h4 className='text-center text-4xl mt-10'>Projekty!</h4>
           <div className="text-center separator relative my-3 w-1/3 left-1/2 -translate-x-1/2"></div>
           <p className="text-center">Nie są to oczywiście moje wszystkie projekty, natomiast są to jedne z ważniejszych, które zrobiłem :D</p>
