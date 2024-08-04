@@ -6,11 +6,6 @@ import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata = {
-  title: 'Lukasz26671',
-  description: 'Lukasz26671 website, made using NextJS & Tailwind',
-}
-
 export default function RootLayout({ children }) {
   return (
     <html lang="pl" className="scroll-smooth overflow-x-visible xs:overflow-x-hidden">

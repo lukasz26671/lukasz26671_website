@@ -56,12 +56,12 @@ export default function Home() {
                   Dzięki niemu możesz teraz słuchać muzyki na tej stronie, sam(a) sprawdź :D
                   <br/>
                   <br/>
-                  Kliknij w "menu" w prawym górnym rogu i wypróbuj sam(a)!
+                  Kliknij w &quot;menu&quot; w prawym górnym rogu i wypróbuj sam(a)!
                   <br/>
                 </p>
-                <span className="font-bold text-xs">Aktualna wersja providera została przebudowana używając <a href="https://www.rust-lang.org/" className="text-[#c14a09] border-transparent border-b hover:border-[#c14a09]">Rust'a</a></span>
-                <Link href="https://github.com/lukasz26671/r_webaudioprov" className="absolute bottom-2 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:bottom-5 lg:left-5" target='_blank'>
-                  <Button color="red" className="text-lg sm:text-sm">Link do projektu</Button>
+                <span className="font-bold text-xs">Aktualna wersja providera została przebudowana używając <a href="https://www.rust-lang.org/" className="text-[#c14a09] border-transparent border-b hover:border-[#c14a09]">ASP.NET</a></span>
+                <Link href="#" className="absolute bottom-2 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:bottom-5 lg:left-5" target='_blank'>
+                  <Button color="red" className="text-lg sm:text-sm disabled">Link do projektu (niedostępny)</Button>
                 </Link>
               </div>
               <div className="relative col-auto grid-item h-96 md:h-96 lg:h-72 w-full align-center p-3 bg-zinc-900/20">

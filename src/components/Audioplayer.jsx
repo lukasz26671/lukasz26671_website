@@ -6,6 +6,8 @@ import { Select, Option } from "@material-tailwind/react";
 import Link from "next/link";
 
 export default function Audioplayer() {
+    const BASE_URL = "http://lukasz26671.ddns.net:7207";
+
     const icon_size = 24;
     const [playlist, setPlaylist] = useState([])
     const [shuffle, setShuffle] = useState(false);
@@ -40,7 +42,7 @@ export default function Audioplayer() {
     useEffect(()=> {
         if(playlistRetries < 5) {
             setTimeout(()=> {
-                fetch(`http://lukasz266713.ddns.net:3500/Playlist/GetAvailablePlaylists`, {
+                fetch(`${BASE_URL}/api/playlist/list`, {
                     method: "POST",
                     redirect: "follow",
                     referrerPolicy: "no-referrer",
@@ -62,7 +64,7 @@ export default function Audioplayer() {
         if(playlists[playlistId] == null)
             return;
 
-        fetch(`http://lukasz266713.ddns.net:3500/Playlist/GetPlaylist`, {
+        fetch(`${BASE_URL}/api/playlist/GetPlaylist`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json;v=1"
@@ -90,7 +92,7 @@ export default function Audioplayer() {
             let id = playlist?.[songId]?.youtubeID;
             if (id != null) {
                 audioEl.current.pause();
-                audioEl.current.src = `http://lukasz266713.ddns.net:1234/stream_id/${playlist?.[songId]?.youtubeID}`;
+                audioEl.current.src = `${BASE_URL}/Stream/Audio/${playlist?.[songId]?.youtubeID}`;
 
                 if(isPlaying) {
                     audioEl.current.play().catch(e => {
