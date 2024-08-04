@@ -47,7 +47,6 @@ export default function Audioplayer() {
                     redirect: "follow",
                     referrerPolicy: "no-referrer",
                 }).then(res => res.json()).then(pl => {
-                    console.log(pl)
                     setPlaylists(pl);
                 }).catch(e => {
                     setPlaylistRetires(playlistRetries + 1); 
@@ -82,17 +81,19 @@ export default function Audioplayer() {
 
     
     useEffect(()=> {
-        if(playlist != null)
-            setSongId(getRandomSongIdx(playlist))
+        if(playlist != null) {
+            let randomSongId = getRandomSongIdx(playlist);
+            setSongId(randomSongId)
+        }
 
     }, [playlist])
 
     useEffect(()=> {
-        if (audioEl.current != null) {
-            let id = playlist?.[songId]?.youtubeID;
+        if (audioEl.current != null && playlist != null && playlist?.[songId] != null) {
+            let id = playlist?.[songId]?.youtubeId;
             if (id != null) {
                 audioEl.current.pause();
-                audioEl.current.src = `${BASE_URL}/Stream/Audio/${playlist?.[songId]?.youtubeID}`;
+                audioEl.current.src = `${BASE_URL}/Stream/Audio/${playlist?.[songId]?.youtubeId}`;
 
                 if(isPlaying) {
                     audioEl.current.play().catch(e => {
@@ -103,7 +104,7 @@ export default function Audioplayer() {
 
             }
         }
-    }, [songId])
+    }, [songId, playlist])
 
 
     function activeState(state) {
