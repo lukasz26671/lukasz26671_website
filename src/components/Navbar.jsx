@@ -71,6 +71,11 @@ export function Navbar({ className }) {
                             Hacker Typer 2
                         </ListItem>
                     </Link>
+                    <Link href="http://lukasz26671.ddns.net:7207">
+                        <ListItem className="hover:drop-shadow-glow-white text-center sm:text-left">
+                            Media Provider
+                        </ListItem>
+                    </Link>
                     <Audioplayer/>
                     <div className="separator border-slate-700/40"></div>
                 </List>

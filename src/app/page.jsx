@@ -50,29 +50,29 @@ export default function Home() {
           <article className="px-0 sm:px-2 md:px-20">
             <div className="grid grid-cols-1 sm:grid-cols-2 auto-rows-max max-w-full text-center md:text-left my-10">
               <div className="relative col-auto grid-item h-96 md:h-96 lg:h-72 w-full p-3 bg-zinc-900/10">
-                <h5 className="text-red-500 drop-shadow-glow-red uppercase text-lg mb-2 text-md sm:text-xl md:text-2xl">Youtube Audio Provider</h5>
+                <h5 className="text-red-500 drop-shadow-glow-red uppercase text-lg mb-2 text-md sm:text-xl md:text-2xl">Media Provider</h5>
                 <div className="separator border-red-500 mb-2"></div>
                 <p className="relative text-red-200 sm:p-3 whitespace-break-spaces text-md md:text-sm">
-                  Dzięki niemu możesz teraz słuchać muzyki na tej stronie, sam(a) sprawdź :D
+                  Dzięki niemu możesz teraz słuchać muzyki na tej stronie, pobierać, streamować filmiki z Youtuba, znaleźć odpowiednik piosenki ze Spotify na Youtube, a nawet pobierać Tiktoki!
                   <br/>
                   <br/>
                   Kliknij w &quot;menu&quot; w prawym górnym rogu i wypróbuj sam(a)!
                   <br/>
                 </p>
-                <span className="font-bold text-xs">Aktualna wersja providera została przebudowana używając <a href="https://www.rust-lang.org/" className="text-[#c14a09] border-transparent border-b hover:border-[#c14a09]">ASP.NET</a></span>
-                <Link href="#" className="absolute bottom-2 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:bottom-5 lg:left-5" target='_blank'>
-                  <Button color="red" className="text-lg sm:text-sm disabled">Link do projektu (niedostępny)</Button>
+                <span className="font-bold text-xs">Aktualna wersja providera została przebudowana używając <a className="text-[#c14a09] border-transparent border-b hover:border-[#c14a09]">ASP.NET</a></span>
+                <Link href="http://lukasz26671.ddns.net:7207/" className="absolute bottom-2 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:bottom-5 lg:left-5" target='_blank'>
+                  <Button color="red" className="text-lg sm:text-sm disabled">Link do strony</Button>
                 </Link>
               </div>
               <div className="relative col-auto grid-item h-96 md:h-96 lg:h-72 w-full align-center p-3 bg-zinc-900/20">
-                <h5 className="text-lime-400 drop-shadow-glow-lime uppercase text-lg mb-2 text-md sm:text-xl md:text-2xl">Google Sheets Playlist Reader</h5>
+                <h5 className="text-lime-400 drop-shadow-glow-lime uppercase text-lg mb-2 text-md sm:text-xl md:text-2xl">Google Sheets Playlist Reader (legacy)</h5>
                 <div className="separator border-lime-400 mb-2"></div>
                 <p className="text-lime-100 sm:p-3 whitespace-break-spaces text-md md:text-sm relative">
-                  Dzięki niemu możesz teraz słuchać muzyki na tej stronie, sam(a) sprawdź :D
+                  Dzięki niemu możesz teraz słuchać muzyki na tej stronie, sam(a) sprawdź :D. Teraz wbudowany w Media Provider.
                 </p>
                 
                 <Link href="https://github.com/lukasz26671/webSrcProvider" className="absolute bottom-2 left-1/2 -translate-x-1/2 lg:translate-x-0 lg:bottom-5 lg:left-5" target='_blank'>
-                  <Button color="green" className="text-lg sm:text-sm">Link do projektu</Button>
+                  <Button color="green" className="text-lg sm:text-sm">Link do projektu (legacy)</Button>
                 </Link>
               </div>
               <div className="relative col-auto grid-item h-96 lg:h-72 w-full p-3 bg-zinc-900/30">
